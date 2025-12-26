@@ -2,6 +2,7 @@ package pl.przemek.storage_buddy.file;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
 import pl.przemek.storage_buddy.file.dto.CreateFileRequest;
 import pl.przemek.storage_buddy.file.dto.FileResponse;
+import pl.przemek.storage_buddy.file.exception.FileAlreadyExistsException;
 
 @ExtendWith(OutputCaptureExtension.class)
 class FileServiceTest {
@@ -88,5 +90,33 @@ class FileServiceTest {
         // then
         File savedFile = fileRepository.findById(result.id()).get();
         assertEquals(FILENAME, savedFile.getName());
+    }
+
+    @Test
+    void shouldThrowFileAlreadyExistsExceptionWhenFileWithGivenFilenameAlreadyExists() {
+        // given
+        File toBeSaved = fileMapper.toEntity(CREATE_FILE_REQUEST);
+        fileRepository.save(toBeSaved);
+
+        // when
+        FileAlreadyExistsException thrown =
+                assertThrows(FileAlreadyExistsException.class, () -> fileService.createFile(CREATE_FILE_REQUEST));
+
+        // then
+        String expected = FileAlreadyExistsException.ERROR_MESSAGE.formatted(FILENAME);
+        assertEquals(expected, thrown.getMessage());
+    }
+
+    @Test
+    void shouldNotSaveFileWhenFileWithGivenFilenameAlreadyExists() {
+        // given
+        File toBeSaved = fileMapper.toEntity(CREATE_FILE_REQUEST);
+        fileRepository.save(toBeSaved);
+
+        // when
+        assertThrows(FileAlreadyExistsException.class, () -> fileService.createFile(CREATE_FILE_REQUEST));
+
+        // then
+        verify(fileRepository, times(1)).save(toBeSaved);
     }
 }

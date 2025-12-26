@@ -168,4 +168,9 @@ class InMemoryFileRepository implements FileRepository {
     public Page<File> findAll(Pageable pageable) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public boolean existsByName(String name) {
+        return db.values().stream().map(File::getName).anyMatch(name::equals);
+    }
 }
