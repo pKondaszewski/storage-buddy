@@ -1,11 +1,11 @@
 package pl.przemek.storage_buddy.file;
 
-import org.junit.jupiter.api.Test;
-import pl.przemek.storage_buddy.file.dto.CreateFileRequest;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+
+import org.junit.jupiter.api.Test;
+import pl.przemek.storage_buddy.file.dto.CreateFileRequest;
 
 class FileMapperTest {
 

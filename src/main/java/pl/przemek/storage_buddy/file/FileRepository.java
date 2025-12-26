@@ -1,8 +1,6 @@
 package pl.przemek.storage_buddy.file;
 
+import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.UUID;
-
-interface FileRepository extends JpaRepository<File, UUID> {
-}
+interface FileRepository extends JpaRepository<File, UUID> {}
