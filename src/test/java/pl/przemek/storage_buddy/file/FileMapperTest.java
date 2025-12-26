@@ -5,19 +5,19 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
-import pl.przemek.storage_buddy.file.dto.CreateFileRequest;
+import pl.przemek.storage_buddy.file.dto.CreateFileInfoRequest;
 
 class FileMapperTest {
 
     private final FileMapper mapper = new FileMapperImpl();
 
     private static final String FILENAME = "name.txt";
-    private static final CreateFileRequest CREATE_FILE_REQUEST = new CreateFileRequest(FILENAME);
+    private static final CreateFileInfoRequest CREATE_FILE_REQUEST = new CreateFileInfoRequest(FILENAME);
 
     @Test
     void shouldReturnNotNullResultDuringMappingToEntity() {
         // when
-        File result = mapper.toEntity(CREATE_FILE_REQUEST);
+        FileInfo result = mapper.toEntity(CREATE_FILE_REQUEST);
 
         // then
         assertNotNull(result);
@@ -26,7 +26,7 @@ class FileMapperTest {
     @Test
     void shouldIdBeNullDuringMappingToEntity() {
         // when
-        File result = mapper.toEntity(CREATE_FILE_REQUEST);
+        FileInfo result = mapper.toEntity(CREATE_FILE_REQUEST);
 
         // then
         assertNull(result.getId());
@@ -35,7 +35,7 @@ class FileMapperTest {
     @Test
     void shouldCorrectlyMapFilenameDuringMappingToEntity() {
         // when
-        File result = mapper.toEntity(CREATE_FILE_REQUEST);
+        FileInfo result = mapper.toEntity(CREATE_FILE_REQUEST);
 
         // then
         assertEquals(FILENAME, result.getName());

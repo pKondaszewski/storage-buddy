@@ -11,9 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery;
 
-class InMemoryFileRepository implements FileRepository {
+class InMemoryFileInfoRepository implements FileInfoRepository {
 
-    private final HashMap<UUID, File> db = new HashMap<>();
+    private final HashMap<UUID, FileInfo> db = new HashMap<>();
 
     @Override
     public void flush() {
@@ -21,17 +21,17 @@ class InMemoryFileRepository implements FileRepository {
     }
 
     @Override
-    public <S extends File> S saveAndFlush(S entity) {
+    public <S extends FileInfo> S saveAndFlush(S entity) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File> List<S> saveAllAndFlush(Iterable<S> entities) {
+    public <S extends FileInfo> List<S> saveAllAndFlush(Iterable<S> entities) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void deleteAllInBatch(Iterable<File> entities) {
+    public void deleteAllInBatch(Iterable<FileInfo> entities) {
         throw new UnsupportedOperationException();
     }
 
@@ -46,58 +46,58 @@ class InMemoryFileRepository implements FileRepository {
     }
 
     @Override
-    public File getOne(UUID uuid) {
+    public FileInfo getOne(UUID uuid) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public File getById(UUID uuid) {
+    public FileInfo getById(UUID uuid) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public File getReferenceById(UUID uuid) {
+    public FileInfo getReferenceById(UUID uuid) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File> Optional<S> findOne(Example<S> example) {
+    public <S extends FileInfo> Optional<S> findOne(Example<S> example) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File> List<S> findAll(Example<S> example) {
+    public <S extends FileInfo> List<S> findAll(Example<S> example) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File> List<S> findAll(Example<S> example, Sort sort) {
+    public <S extends FileInfo> List<S> findAll(Example<S> example, Sort sort) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File> Page<S> findAll(Example<S> example, Pageable pageable) {
+    public <S extends FileInfo> Page<S> findAll(Example<S> example, Pageable pageable) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File> long count(Example<S> example) {
+    public <S extends FileInfo> long count(Example<S> example) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File> boolean exists(Example<S> example) {
+    public <S extends FileInfo> boolean exists(Example<S> example) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File, R> R findBy(
+    public <S extends FileInfo, R> R findBy(
             Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public <S extends File> S save(S entity) {
+    public <S extends FileInfo> S save(S entity) {
         UUID id = UUID.randomUUID();
         db.put(id, entity);
         entity.setId(id);
@@ -105,12 +105,12 @@ class InMemoryFileRepository implements FileRepository {
     }
 
     @Override
-    public <S extends File> List<S> saveAll(Iterable<S> entities) {
+    public <S extends FileInfo> List<S> saveAll(Iterable<S> entities) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Optional<File> findById(UUID uuid) {
+    public Optional<FileInfo> findById(UUID uuid) {
         return Optional.of(db.get(uuid));
     }
 
@@ -120,12 +120,12 @@ class InMemoryFileRepository implements FileRepository {
     }
 
     @Override
-    public List<File> findAll() {
+    public List<FileInfo> findAll() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public List<File> findAllById(Iterable<UUID> uuids) {
+    public List<FileInfo> findAllById(Iterable<UUID> uuids) {
         throw new UnsupportedOperationException();
     }
 
@@ -140,7 +140,7 @@ class InMemoryFileRepository implements FileRepository {
     }
 
     @Override
-    public void delete(File entity) {
+    public void delete(FileInfo entity) {
         throw new UnsupportedOperationException();
     }
 
@@ -150,7 +150,7 @@ class InMemoryFileRepository implements FileRepository {
     }
 
     @Override
-    public void deleteAll(Iterable<? extends File> entities) {
+    public void deleteAll(Iterable<? extends FileInfo> entities) {
         throw new UnsupportedOperationException();
     }
 
@@ -160,17 +160,17 @@ class InMemoryFileRepository implements FileRepository {
     }
 
     @Override
-    public List<File> findAll(Sort sort) {
+    public List<FileInfo> findAll(Sort sort) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public Page<File> findAll(Pageable pageable) {
+    public Page<FileInfo> findAll(Pageable pageable) {
         throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean existsByName(String name) {
-        return db.values().stream().map(File::getName).anyMatch(name::equals);
+        return db.values().stream().map(FileInfo::getName).anyMatch(name::equals);
     }
 }

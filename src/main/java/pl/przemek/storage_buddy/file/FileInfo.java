@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Entity
 @NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-class File {
+class FileInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;

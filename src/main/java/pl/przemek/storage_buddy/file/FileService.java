@@ -1,28 +1,30 @@
 package pl.przemek.storage_buddy.file;
 
+import static pl.przemek.storage_buddy.common.LogMessages.CREATED_FILE_INFO;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import pl.przemek.storage_buddy.file.dto.CreateFileRequest;
-import pl.przemek.storage_buddy.file.dto.FileResponse;
-import pl.przemek.storage_buddy.file.exception.FileAlreadyExistsException;
+import pl.przemek.storage_buddy.file.dto.CreateFileInfoRequest;
+import pl.przemek.storage_buddy.file.dto.CreatedFileInfoResponse;
+import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
 
 @Slf4j
 @RequiredArgsConstructor
 class FileService {
-    private final FileRepository fileRepository;
+    private final FileInfoRepository fileInfoRepository;
     private final FileMapper fileMapper;
 
-    public FileResponse createFile(CreateFileRequest request) {
+    public CreatedFileInfoResponse createFile(CreateFileInfoRequest request) {
         ensureFileDoesNotExist(request);
-        File toBeSaved = fileMapper.toEntity(request);
-        File saved = fileRepository.save(toBeSaved);
-        log.info("Successfully created file: {}", saved.getName());
-        return new FileResponse(saved.getId());
+        FileInfo toBeSaved = fileMapper.toEntity(request);
+        FileInfo saved = fileInfoRepository.save(toBeSaved);
+        log.info(CREATED_FILE_INFO, saved.getName());
+        return fileMapper.toResponse(saved);
     }
 
-    private void ensureFileDoesNotExist(CreateFileRequest request) {
-        if (fileRepository.existsByName(request.name())) {
-            throw new FileAlreadyExistsException(request.name());
+    private void ensureFileDoesNotExist(CreateFileInfoRequest request) {
+        if (fileInfoRepository.existsByName(request.name())) {
+            throw new FileInfoAlreadyExistsException(request.name());
         }
     }
 }

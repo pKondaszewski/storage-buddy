@@ -41,6 +41,7 @@ ext {
 	mapstructVersion = '1.6.3'
 	lombokMapstructBindingVersion = '0.2.0'
 	testcontainersMysqlVersion = '2.0.2'
+	archUnitVersion = '1.4.1'
 }
 
 dependencies {
@@ -68,6 +69,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testImplementation 'org.springframework.boot:spring-boot-testcontainers'
 	testImplementation "org.testcontainers:testcontainers-mysql:${testcontainersMysqlVersion}"
+	testImplementation "com.tngtech.archunit:archunit:${archUnitVersion}"
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

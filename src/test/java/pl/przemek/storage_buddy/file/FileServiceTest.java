@@ -8,34 +8,36 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static pl.przemek.storage_buddy.common.LogMessages.CREATED_FILE_INFO;
 
 import org.hibernate.AssertionFailure;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.helpers.MessageFormatter;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
-import pl.przemek.storage_buddy.file.dto.CreateFileRequest;
-import pl.przemek.storage_buddy.file.dto.FileResponse;
-import pl.przemek.storage_buddy.file.exception.FileAlreadyExistsException;
+import pl.przemek.storage_buddy.file.dto.CreateFileInfoRequest;
+import pl.przemek.storage_buddy.file.dto.CreatedFileInfoResponse;
+import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
 
 @ExtendWith(OutputCaptureExtension.class)
 class FileServiceTest {
 
-    private final FileRepository fileRepository = spy(new InMemoryFileRepository());
+    private final FileInfoRepository fileInfoRepository = spy(new InMemoryFileInfoRepository());
     private final FileMapper fileMapper = spy(new FileMapperImpl());
-    private final FileService fileService = new FileService(fileRepository, fileMapper);
+    private final FileService fileService = new FileService(fileInfoRepository, fileMapper);
 
     private static final String FILENAME = "name.txt";
-    private static final CreateFileRequest CREATE_FILE_REQUEST = new CreateFileRequest(FILENAME);
+    private static final CreateFileInfoRequest CREATE_FILE_REQUEST = new CreateFileInfoRequest(FILENAME);
 
-    private FileResponse createFile() {
+    private CreatedFileInfoResponse createFile() {
         return fileService.createFile(CREATE_FILE_REQUEST);
     }
 
     @AfterEach
     void clearDb() {
-        fileRepository.deleteAllInBatch();
+        fileInfoRepository.deleteAllInBatch();
     }
 
     @Test
@@ -44,7 +46,7 @@ class FileServiceTest {
         createFile();
 
         // then
-        verify(fileRepository, times(1)).save(any());
+        verify(fileInfoRepository, times(1)).save(any());
     }
 
     @Test
@@ -54,66 +56,69 @@ class FileServiceTest {
 
         // then
         verify(fileMapper, times(1)).toEntity(CREATE_FILE_REQUEST);
+        verify(fileMapper, times(1)).toResponse(any());
     }
 
     @Test
     void shouldLogInfoAboutSuccessfulPersistence(CapturedOutput output) {
         // given
-        String logMessage = "Successfully created file: %s".formatted(FILENAME);
+        String expectedMessage =
+                MessageFormatter.format(CREATED_FILE_INFO, FILENAME).getMessage();
 
         // when
         createFile();
 
         // then
-        assertTrue(output.getOut().contains(logMessage));
+        assertTrue(output.getOut().contains(expectedMessage));
     }
 
     @Test
     void shouldCreateAndPersistFile() {
         // when
-        FileResponse result = createFile();
+        CreatedFileInfoResponse result = createFile();
 
         // then
-        assertTrue(fileRepository.existsById(result.id()));
+        assertTrue(fileInfoRepository.existsById(result.id()));
     }
 
     @Test
     void shouldCreateFileWithFieldsFilled() {
         // when
-        FileResponse result = createFile();
+        CreatedFileInfoResponse result = createFile();
 
         // then
-        File savedFile =
-                fileRepository.findById(result.id()).orElseThrow(() -> new AssertionFailure("Expected existing file"));
+        FileInfo savedFileInfo = fileInfoRepository
+                .findById(result.id())
+                .orElseThrow(() -> new AssertionFailure("Expected existing file"));
         assertNotNull(result.id());
-        assertEquals(FILENAME, savedFile.getName());
+        assertEquals(FILENAME, savedFileInfo.getName());
     }
 
     @Test
     void shouldThrowFileAlreadyExistsExceptionWhenFileWithGivenFilenameAlreadyExists() {
         // given
-        File toBeSaved = fileMapper.toEntity(CREATE_FILE_REQUEST);
-        fileRepository.save(toBeSaved);
+        FileInfo toBeSaved = fileMapper.toEntity(CREATE_FILE_REQUEST);
+        fileInfoRepository.save(toBeSaved);
 
         // when
-        FileAlreadyExistsException thrown =
-                assertThrows(FileAlreadyExistsException.class, () -> fileService.createFile(CREATE_FILE_REQUEST));
+        FileInfoAlreadyExistsException thrown =
+                assertThrows(FileInfoAlreadyExistsException.class, () -> fileService.createFile(CREATE_FILE_REQUEST));
 
         // then
-        String expected = FileAlreadyExistsException.ERROR_MESSAGE.formatted(FILENAME);
+        String expected = FileInfoAlreadyExistsException.ERROR_MESSAGE.formatted(FILENAME);
         assertEquals(expected, thrown.getMessage());
     }
 
     @Test
     void shouldNotSaveFileWhenFileWithGivenFilenameAlreadyExists() {
         // given
-        File toBeSaved = fileMapper.toEntity(CREATE_FILE_REQUEST);
-        fileRepository.save(toBeSaved);
+        FileInfo toBeSaved = fileMapper.toEntity(CREATE_FILE_REQUEST);
+        fileInfoRepository.save(toBeSaved);
 
         // when
-        assertThrows(FileAlreadyExistsException.class, () -> fileService.createFile(CREATE_FILE_REQUEST));
+        assertThrows(FileInfoAlreadyExistsException.class, () -> fileService.createFile(CREATE_FILE_REQUEST));
 
         // then
-        verify(fileRepository, times(1)).save(toBeSaved);
+        verify(fileInfoRepository, times(1)).save(toBeSaved);
     }
 }
