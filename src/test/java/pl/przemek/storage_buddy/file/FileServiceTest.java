@@ -9,6 +9,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import org.hibernate.AssertionFailure;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -28,24 +29,19 @@ class FileServiceTest {
     private static final String FILENAME = "name.txt";
     private static final CreateFileRequest CREATE_FILE_REQUEST = new CreateFileRequest(FILENAME);
 
+    private FileResponse createFile() {
+        return fileService.createFile(CREATE_FILE_REQUEST);
+    }
+
     @AfterEach
     void clearDb() {
         fileRepository.deleteAllInBatch();
     }
 
     @Test
-    void shouldCreateFile() {
-        // when
-        FileResponse result = fileService.createFile(CREATE_FILE_REQUEST);
-
-        // then
-        assertNotNull(result.id());
-    }
-
-    @Test
     void shouldUseRepositoryDuringPersistingFile() {
         // when
-        fileService.createFile(CREATE_FILE_REQUEST);
+        createFile();
 
         // then
         verify(fileRepository, times(1)).save(any());
@@ -54,7 +50,7 @@ class FileServiceTest {
     @Test
     void shouldUseMapperDuringPersistingFile() {
         // when
-        fileService.createFile(CREATE_FILE_REQUEST);
+        createFile();
 
         // then
         verify(fileMapper, times(1)).toEntity(CREATE_FILE_REQUEST);
@@ -63,11 +59,10 @@ class FileServiceTest {
     @Test
     void shouldLogInfoAboutSuccessfulPersistence(CapturedOutput output) {
         // given
-        String logMessage =
-                "INFO pl.przemek.storage_buddy.file.FileService -- Successfully created file: %s".formatted(FILENAME);
+        String logMessage = "Successfully created file: %s".formatted(FILENAME);
 
         // when
-        fileService.createFile(CREATE_FILE_REQUEST);
+        createFile();
 
         // then
         assertTrue(output.getOut().contains(logMessage));
@@ -76,19 +71,21 @@ class FileServiceTest {
     @Test
     void shouldCreateAndPersistFile() {
         // when
-        FileResponse result = fileService.createFile(CREATE_FILE_REQUEST);
+        FileResponse result = createFile();
 
         // then
         assertTrue(fileRepository.existsById(result.id()));
     }
 
     @Test
-    void shouldCreateFileWithCorrectName() {
+    void shouldCreateFileWithFieldsFilled() {
         // when
-        FileResponse result = fileService.createFile(CREATE_FILE_REQUEST);
+        FileResponse result = createFile();
 
         // then
-        File savedFile = fileRepository.findById(result.id()).get();
+        File savedFile =
+                fileRepository.findById(result.id()).orElseThrow(() -> new AssertionFailure("Expected existing file"));
+        assertNotNull(result.id());
         assertEquals(FILENAME, savedFile.getName());
     }
 
