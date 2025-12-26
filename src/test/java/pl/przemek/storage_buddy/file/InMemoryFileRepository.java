@@ -43,7 +43,7 @@ class InMemoryFileRepository implements FileRepository {
 
     @Override
     public void deleteAllInBatch() {
-        throw new UnsupportedOperationException();
+        db.clear();
     }
 
     @Override
