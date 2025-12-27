@@ -1,16 +1,16 @@
 package pl.przemek.storage_buddy.common.config.minio;
 
-import io.minio.BucketExistsArgs;
-import io.minio.MakeBucketArgs;
-import io.minio.MinioClient;
-import io.minio.errors.InsufficientDataException;
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.errors.InsufficientDataException;
+import org.junit.jupiter.api.Test;
 
 class MinioMigrationTest {
 
@@ -52,8 +52,7 @@ class MinioMigrationTest {
     @Test
     void throwExceptionWhenMinioClientReturnsException() throws Exception {
         // given
-        when(minioClient.bucketExists(EXISTS_BUCKET_ARGS))
-                .thenThrow(new InsufficientDataException(null));
+        when(minioClient.bucketExists(EXISTS_BUCKET_ARGS)).thenThrow(new InsufficientDataException(null));
 
         // when then
         assertThrows(InsufficientDataException.class, minioMigration::migrate);
