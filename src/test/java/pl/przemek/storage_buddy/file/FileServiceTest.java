@@ -24,12 +24,12 @@ import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
 @ExtendWith(OutputCaptureExtension.class)
 class FileServiceTest {
 
+    private static final String FILENAME = "name.txt";
+    private static final CreateFileInfoRequest CREATE_FILE_REQUEST = new CreateFileInfoRequest(FILENAME);
+
     private final FileInfoRepository fileInfoRepository = spy(new InMemoryFileInfoRepository());
     private final FileMapper fileMapper = spy(new FileMapperImpl());
     private final FileService fileService = new FileService(fileInfoRepository, fileMapper);
-
-    private static final String FILENAME = "name.txt";
-    private static final CreateFileInfoRequest CREATE_FILE_REQUEST = new CreateFileInfoRequest(FILENAME);
 
     private CreatedFileInfoResponse createFile() {
         return fileService.createFile(CREATE_FILE_REQUEST);

@@ -9,10 +9,10 @@ import pl.przemek.storage_buddy.file.dto.CreateFileInfoRequest;
 
 class FileMapperTest {
 
-    private final FileMapper mapper = new FileMapperImpl();
-
     private static final String FILENAME = "name.txt";
     private static final CreateFileInfoRequest CREATE_FILE_REQUEST = new CreateFileInfoRequest(FILENAME);
+
+    private final FileMapper mapper = new FileMapperImpl();
 
     @Test
     void shouldReturnNotNullResultDuringMappingToEntity() {
