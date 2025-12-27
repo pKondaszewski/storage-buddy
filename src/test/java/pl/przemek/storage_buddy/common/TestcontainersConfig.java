@@ -1,4 +1,4 @@
-package pl.przemek.storage_buddy;
+package pl.przemek.storage_buddy.common;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
