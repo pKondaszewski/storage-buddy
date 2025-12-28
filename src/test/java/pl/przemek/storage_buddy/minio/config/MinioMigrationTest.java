@@ -1,4 +1,4 @@
-package pl.przemek.storage_buddy.common.config.minio;
+package pl.przemek.storage_buddy.minio.config;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
