@@ -17,7 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.boot.test.system.CapturedOutput;
 import org.springframework.boot.test.system.OutputCaptureExtension;
-import pl.przemek.storage_buddy.file.dto.CreateFileInfoRequest;
+import pl.przemek.storage_buddy.file.dto.CreateFileInfoDto;
 import pl.przemek.storage_buddy.file.dto.CreatedFileInfoResponse;
 import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
 
@@ -25,7 +25,8 @@ import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
 class FileServiceTest {
 
     private static final String FILENAME = "name.txt";
-    private static final CreateFileInfoRequest CREATE_FILE_REQUEST = new CreateFileInfoRequest(FILENAME);
+    private static final CreateFileInfoDto CREATE_FILE_REQUEST =
+            new CreateFileInfoDto(FILENAME, "objectKey.txt", "plain/text");
 
     private final FileInfoRepository fileInfoRepository = spy(new InMemoryFileInfoRepository());
     private final FileMapper fileMapper = spy(new FileMapperImpl());

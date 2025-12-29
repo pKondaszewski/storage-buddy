@@ -22,6 +22,8 @@ class FileInfo {
     private UUID id;
 
     private String name;
+    private String objectKey;
+    private String contentType;
 
     @CreatedDate
     private Instant createdAt;
