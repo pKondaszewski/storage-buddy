@@ -1,15 +1,5 @@
 package pl.przemek.storage_buddy.file;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.helpers.MessageFormatter;
-import org.springframework.boot.test.system.CapturedOutput;
-import org.springframework.boot.test.system.OutputCaptureExtension;
-import pl.przemek.storage_buddy.file.dto.CreateFileInfoDto;
-import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
-import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -19,6 +9,16 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static pl.przemek.storage_buddy.common.LogMessages.CREATED_FILE_INFO;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.helpers.MessageFormatter;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
+import pl.przemek.storage_buddy.file.dto.CreateFileInfoDto;
+import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
+import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
 
 @ExtendWith(OutputCaptureExtension.class)
 class FileServiceTest {
