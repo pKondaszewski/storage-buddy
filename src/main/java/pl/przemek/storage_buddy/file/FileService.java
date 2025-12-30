@@ -5,7 +5,7 @@ import static pl.przemek.storage_buddy.common.LogMessages.CREATED_FILE_INFO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import pl.przemek.storage_buddy.file.dto.CreateFileInfoDto;
-import pl.przemek.storage_buddy.file.dto.CreatedFileInfoResponse;
+import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
 import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
 
 @Slf4j
@@ -14,7 +14,9 @@ class FileService {
     private final FileInfoRepository fileInfoRepository;
     private final FileMapper fileMapper;
 
-    CreatedFileInfoResponse createFile(CreateFileInfoDto request) {
+    // String objectKey = "%s.%s".formatted(uuidHelper.randomAsString(), fileExtension);
+
+    CreatedFileInfoDto createFile(CreateFileInfoDto request) {
         ensureFileDoesNotExist(request);
         FileInfo toBeSaved = fileMapper.toEntity(request);
         FileInfo saved = fileInfoRepository.save(toBeSaved);

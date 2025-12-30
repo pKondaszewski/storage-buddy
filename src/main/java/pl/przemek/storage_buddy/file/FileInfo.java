@@ -10,6 +10,7 @@ import java.util.UUID;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
@@ -22,9 +23,14 @@ class FileInfo {
     private UUID id;
 
     private String name;
+    private Integer size;
     private String objectKey;
     private String contentType;
+    private FileStatus status;
 
     @CreatedDate
     private Instant createdAt;
+
+    @LastModifiedDate
+    private Instant modifiedAt;
 }

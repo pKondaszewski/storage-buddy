@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import pl.przemek.storage_buddy.file.dto.CreateFileInfoDto;
-import pl.przemek.storage_buddy.file.dto.CreatedFileInfoResponse;
+import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
 
 class FileMapperTest {
 
@@ -47,6 +47,7 @@ class FileMapperTest {
         assertEquals(FILENAME, result.getName());
         assertEquals(OBJECT_KEY, result.getObjectKey());
         assertEquals(CONTENT_TYPE, result.getContentType());
+        assertEquals(FileStatus.PENDING, result.getStatus());
     }
 
     @Test
@@ -61,7 +62,7 @@ class FileMapperTest {
     @Test
     void shouldCorrectlyMapNullToResponse() {
         // when
-        CreatedFileInfoResponse result = mapper.toResponse(null);
+        CreatedFileInfoDto result = mapper.toResponse(null);
 
         // then
         assertNull(result);
@@ -70,13 +71,19 @@ class FileMapperTest {
     @Test
     void shouldCorrectlyMapIdDuringMappingToResponse() {
         // given
-        UUID expected = UUID.randomUUID();
-        FILE_INFO.setId(expected);
+        String objectKey = UUID.randomUUID().toString();
+        String contentType = UUID.randomUUID().toString();
+        Integer size = 1;
+        FILE_INFO.setObjectKey(objectKey);
+        FILE_INFO.setContentType(contentType);
+        FILE_INFO.setSize(size);
 
         // when
-        CreatedFileInfoResponse result = mapper.toResponse(FILE_INFO);
+        CreatedFileInfoDto result = mapper.toResponse(FILE_INFO);
 
         // then
-        assertEquals(expected, result.id());
+        assertEquals(objectKey, result.objectKey());
+        assertEquals(contentType, result.contentType());
+        assertEquals(size, result.size());
     }
 }

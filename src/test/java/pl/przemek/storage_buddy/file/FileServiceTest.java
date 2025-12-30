@@ -1,5 +1,15 @@
 package pl.przemek.storage_buddy.file;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.slf4j.helpers.MessageFormatter;
+import org.springframework.boot.test.system.CapturedOutput;
+import org.springframework.boot.test.system.OutputCaptureExtension;
+import pl.przemek.storage_buddy.file.dto.CreateFileInfoDto;
+import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
+import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -9,17 +19,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static pl.przemek.storage_buddy.common.LogMessages.CREATED_FILE_INFO;
-
-import org.hibernate.AssertionFailure;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.slf4j.helpers.MessageFormatter;
-import org.springframework.boot.test.system.CapturedOutput;
-import org.springframework.boot.test.system.OutputCaptureExtension;
-import pl.przemek.storage_buddy.file.dto.CreateFileInfoDto;
-import pl.przemek.storage_buddy.file.dto.CreatedFileInfoResponse;
-import pl.przemek.storage_buddy.file.exception.FileInfoAlreadyExistsException;
 
 @ExtendWith(OutputCaptureExtension.class)
 class FileServiceTest {
@@ -32,7 +31,7 @@ class FileServiceTest {
     private final FileMapper fileMapper = spy(new FileMapperImpl());
     private final FileService fileService = new FileService(fileInfoRepository, fileMapper);
 
-    private CreatedFileInfoResponse createFile() {
+    private CreatedFileInfoDto createFile() {
         return fileService.createFile(CREATE_FILE_REQUEST);
     }
 
@@ -76,22 +75,20 @@ class FileServiceTest {
     @Test
     void shouldCreateAndPersistFile() {
         // when
-        CreatedFileInfoResponse result = createFile();
+        createFile();
 
         // then
-        assertTrue(fileInfoRepository.existsById(result.id()));
+        assertEquals(1, fileInfoRepository.count());
     }
 
     @Test
     void shouldCreateFileWithFieldsFilled() {
         // when
-        CreatedFileInfoResponse result = createFile();
+        createFile();
 
         // then
-        FileInfo savedFileInfo = fileInfoRepository
-                .findById(result.id())
-                .orElseThrow(() -> new AssertionFailure("Expected existing file"));
-        assertNotNull(result.id());
+        FileInfo savedFileInfo = fileInfoRepository.findAll().getFirst();
+        assertNotNull(savedFileInfo.getId());
         assertEquals(FILENAME, savedFileInfo.getName());
     }
 
