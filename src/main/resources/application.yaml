@@ -20,3 +20,5 @@ minio:
   secret-key: ${MINIO_ROOT_PASSWORD:Password}
   bucket:
     name: cloud-storage-bucket
+    policy:
+      post-expiry-minutes: 5

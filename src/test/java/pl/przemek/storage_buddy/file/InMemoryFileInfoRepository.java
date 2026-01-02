@@ -121,7 +121,7 @@ class InMemoryFileInfoRepository implements FileInfoRepository {
 
     @Override
     public List<FileInfo> findAll() {
-        throw new UnsupportedOperationException();
+        return db.values().stream().toList();
     }
 
     @Override
@@ -131,7 +131,7 @@ class InMemoryFileInfoRepository implements FileInfoRepository {
 
     @Override
     public long count() {
-        throw new UnsupportedOperationException();
+        return db.size();
     }
 
     @Override

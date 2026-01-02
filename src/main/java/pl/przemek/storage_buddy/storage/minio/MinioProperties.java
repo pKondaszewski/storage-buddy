@@ -1,4 +1,4 @@
-package pl.przemek.storage_buddy.minio.config;
+package pl.przemek.storage_buddy.storage.minio;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
