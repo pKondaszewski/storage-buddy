@@ -1,4 +1,4 @@
-package pl.przemek.storage_buddy.storage.dto;
+package pl.przemek.storage_buddy.file.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

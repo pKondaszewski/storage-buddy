@@ -2,6 +2,8 @@ package pl.przemek.storage_buddy.file;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,8 @@ class FileInfo {
     private Integer size;
     private String objectKey;
     private String contentType;
+
+    @Enumerated(EnumType.STRING)
     private FileStatus status;
 
     @CreatedDate

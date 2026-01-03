@@ -8,12 +8,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.przemek.storage_buddy.common.helper.time.TimeHelper;
 import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
-import pl.przemek.storage_buddy.storage.dto.PresignedPostFormDataResponse;
+import pl.przemek.storage_buddy.file.dto.response.PresignedPostFormDataResponse;
 import pl.przemek.storage_buddy.storage.exception.StorageClientException;
 
 @Service
 @RequiredArgsConstructor
-class StorageService {
+class StorageService implements StorageFacade {
 
     private static final String KEY = "key";
     private static final String CONTENT_TYPE = "content-type";
@@ -23,9 +23,10 @@ class StorageService {
     private final TimeHelper timeHelper;
     private final StorageBucketProperties bucket;
 
-    PresignedPostFormDataResponse generatePresignedPostFormData(CreatedFileInfoDto fileInfo) {
-        PostPolicy postPolicy = generatePostPolicy(fileInfo);
-        return getPresignedPostFormData(postPolicy, fileInfo);
+    @Override
+    public PresignedPostFormDataResponse generatePresignedPostFormData(CreatedFileInfoDto dto) {
+        PostPolicy postPolicy = generatePostPolicy(dto);
+        return getPresignedPostFormData(postPolicy, dto);
     }
 
     private PostPolicy generatePostPolicy(CreatedFileInfoDto fileInfo) {

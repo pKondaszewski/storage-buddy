@@ -5,5 +5,5 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class LogMessages {
-    public static final String CREATED_FILE_INFO = "Successfully created file info with name: {}";
+    public static final String SAVED_FILE_INFO = "Successfully saved file info with name: {}";
 }
