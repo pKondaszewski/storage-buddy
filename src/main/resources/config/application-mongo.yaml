@@ -1,0 +1,8 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://mongo_user:mongo_password@localhost:27017/storage_buddy?authSource=admin
+      database: storage_buddy
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG

@@ -1,4 +1,4 @@
-package pl.przemek.storage_buddy.storage.minio;
+package pl.przemek.storage_buddy.common.config.minio;
 
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;

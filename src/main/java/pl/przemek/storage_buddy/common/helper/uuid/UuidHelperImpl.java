@@ -7,6 +7,11 @@ import org.springframework.stereotype.Component;
 class UuidHelperImpl implements UuidHelper {
     @Override
     public String randomAsString() {
-        return UUID.randomUUID().toString();
+        return random().toString();
+    }
+
+    @Override
+    public UUID random() {
+        return UUID.randomUUID();
     }
 }

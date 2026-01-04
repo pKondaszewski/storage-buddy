@@ -1,8 +1,8 @@
 package pl.przemek.storage_buddy.storage;
 
-import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
-import pl.przemek.storage_buddy.file.dto.response.PresignedPostFormDataResponse;
+import pl.przemek.storage_buddy.file.dto.SavedFileInfoDto;
+import pl.przemek.storage_buddy.file.port.in.PresignedPostFormDataResponse;
 
 public interface StorageFacade {
-    PresignedPostFormDataResponse generatePresignedPostFormData(CreatedFileInfoDto fileInfo);
+    PresignedPostFormDataResponse generatePresignedPostFormData(SavedFileInfoDto fileInfo);
 }

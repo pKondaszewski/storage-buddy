@@ -1,4 +1,4 @@
-package pl.przemek.storage_buddy.file;
+package pl.przemek.storage_buddy.adapter.in.rest;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -7,20 +7,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import pl.przemek.storage_buddy.file.dto.request.PresignedPostFormDataRequest;
-import pl.przemek.storage_buddy.file.dto.response.PresignedPostFormDataResponse;
+import pl.przemek.storage_buddy.file.port.in.FileInputPort;
+import pl.przemek.storage_buddy.file.port.in.PresignedPostFormDataRequest;
+import pl.przemek.storage_buddy.file.port.in.PresignedPostFormDataResponse;
 
 @RestController
 @RequestMapping("/files")
 @RequiredArgsConstructor
-class FileController {
-    private final FileService fileService;
+class FileRestController {
+    private final FileInputPort fileInputPort;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     PresignedPostFormDataResponse createPresignedPostFormData(
             // TODO: Jakarta Bean Validation
             @RequestBody PresignedPostFormDataRequest request) {
-        return fileService.createPresignedPostFormData(request);
+        return fileInputPort.createPresignedPostFormData(request);
     }
 }

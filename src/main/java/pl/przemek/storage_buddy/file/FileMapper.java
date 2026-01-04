@@ -2,8 +2,9 @@ package pl.przemek.storage_buddy.file;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
-import pl.przemek.storage_buddy.file.dto.request.PresignedPostFormDataRequest;
+import pl.przemek.storage_buddy.file.dto.SavedFileInfoDto;
+import pl.przemek.storage_buddy.file.port.out.FileInfoRepositoryDto;
+import pl.przemek.storage_buddy.file.port.in.PresignedPostFormDataRequest;
 
 @Mapper
 interface FileMapper {
@@ -11,7 +12,7 @@ interface FileMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "modifiedAt", ignore = true)
     @Mapping(target = "status", constant = "PENDING")
-    FileInfo toEntity(PresignedPostFormDataRequest request, String objectKey);
+    FileInfoRepositoryDto toRepositoryDto(PresignedPostFormDataRequest request, String objectKey);
 
-    CreatedFileInfoDto toDto(FileInfo entity);
+    SavedFileInfoDto toDto(FileInfoRepositoryDto result);
 }

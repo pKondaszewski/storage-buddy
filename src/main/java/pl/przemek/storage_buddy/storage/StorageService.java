@@ -7,8 +7,8 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pl.przemek.storage_buddy.common.helper.time.TimeHelper;
-import pl.przemek.storage_buddy.file.dto.CreatedFileInfoDto;
-import pl.przemek.storage_buddy.file.dto.response.PresignedPostFormDataResponse;
+import pl.przemek.storage_buddy.file.dto.SavedFileInfoDto;
+import pl.przemek.storage_buddy.file.port.in.PresignedPostFormDataResponse;
 import pl.przemek.storage_buddy.storage.exception.StorageClientException;
 
 @Service
@@ -24,12 +24,12 @@ class StorageService implements StorageFacade {
     private final StorageBucketProperties bucket;
 
     @Override
-    public PresignedPostFormDataResponse generatePresignedPostFormData(CreatedFileInfoDto dto) {
+    public PresignedPostFormDataResponse generatePresignedPostFormData(SavedFileInfoDto dto) {
         PostPolicy postPolicy = generatePostPolicy(dto);
         return getPresignedPostFormData(postPolicy, dto);
     }
 
-    private PostPolicy generatePostPolicy(CreatedFileInfoDto fileInfo) {
+    private PostPolicy generatePostPolicy(SavedFileInfoDto fileInfo) {
         PostPolicy policy = new PostPolicy(bucket.name(), timeHelper.now().atZone(ZoneId.systemDefault()));
         policy.addEqualsCondition(KEY, fileInfo.objectKey());
         policy.addEqualsCondition(CONTENT_TYPE, fileInfo.contentType());
@@ -37,7 +37,7 @@ class StorageService implements StorageFacade {
         return policy;
     }
 
-    private PresignedPostFormDataResponse getPresignedPostFormData(PostPolicy policy, CreatedFileInfoDto fileInfo) {
+    private PresignedPostFormDataResponse getPresignedPostFormData(PostPolicy policy, SavedFileInfoDto fileInfo) {
         Map<String, String> presignedPostFormData = fetchPresignedPostFormDataFromStorageClient(policy);
         presignedPostFormData.put(KEY, fileInfo.objectKey());
         presignedPostFormData.put(CONTENT_TYPE, fileInfo.contentType());

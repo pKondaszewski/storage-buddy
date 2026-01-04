@@ -1,9 +1,10 @@
-package pl.przemek.storage_buddy.file;
+package pl.przemek.storage_buddy.adapter.out.jpa;
 
 import jakarta.validation.constraints.NotEmpty;
-import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface FileInfoRepository extends JpaRepository<FileInfo, UUID> {
+import java.util.UUID;
+
+interface FileInfoJpaRepository extends JpaRepository<FileInfoJpaEntity, UUID> {
     boolean existsByName(@NotEmpty String name);
 }

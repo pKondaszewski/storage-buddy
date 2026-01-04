@@ -3,7 +3,7 @@ package pl.przemek.storage_buddy.storage;
 import java.util.Map;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import pl.przemek.storage_buddy.file.dto.response.PresignedPostFormDataResponse;
+import pl.przemek.storage_buddy.file.port.in.PresignedPostFormDataResponse;
 
 @Mapper
 interface StorageMapper {
